@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo list</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>To Do List</h1>
+            <div class="todo">
+                <input type="text" id="inputText" placeholder="Say something...">
+                <button id="addbtn" onclick="addItem()">
+                    <img src="add.png" alt="">
+                </button>
+            </div>
+        </div>
+        <div class="text-body">
+            <ul class="list" id="list">
+            
+            </ul>
+        </div>
+        
+    </div>
+    <script>
+        let inputMinLength = 3;
+        let input = document.querySelector("#inputText");
+        let list =  document.querySelector("#list");
+        let i = 1;
+        function showList(text){
+            list.innerHTML += `
+            <li class="list-item" id="list${i}">
+                <span id="listText${i}"> ${text} </span>
+                <button class="btn del-btn" onclick='delList(${i})'><i class="fas fa-trash"></i></button>
+                <button class="btn edi-btn" onclick='ediList(${i})'><i class="fas fa-edit"></i></button>
+            </li>`;
+            i++;
+        }
+        function delList(listId){
+            let currentText = document.getElementById(`listText${listId}`).innerHTML;
+            let current = document.getElementById(`list${listId}`);
+            let delConfirm = confirm(`Are you sure to delete list ${currentText} ?`);
+            if(delConfirm){
+                
+            list.removeChild(current);
+            }else{
+                console.log("Delete cancel");
+            }
+        }
+        function textFilter(x){
+            if(x){
+                if(x.length >= inputMinLength){
+                    return x;
+                }else {
+                    alert("minimum 3 character")
+                }
+            }else {
+               alert("Please fill the input")
+            }
+        }
+
+        function addItem(){
+          let inputText = textFilter(input.value) ;
+          if(inputText){
+            showList(inputText) ; 
+            input.value = "";
+          }
+        
+        }
+        function ediList(listId){
+            let current = document.getElementById(`listText${listId}`);
+            let newText = prompt("Say something",current.innerHTML);
+            if(textFilter(newText)){
+                current.innerHTML = newText;
+            }
+            
+        }
+    </script>
+</body>
+</html>
